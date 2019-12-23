@@ -1,0 +1,49 @@
+from tkinter import *
+import math
+#!/usr/bin/python3
+class Count:
+    def __init__(self, master):
+        self.master = master
+        self.initWidgets()
+        self.hi = None
+    def initWidgets(self):
+        self.show = Label(relief=SUNKEN, font=('Inconsolata', 22),
+            width=22,height=2, bg='pink', anchor=W)
+        self.show.pack(side=TOP, pady=1)
+        p = Frame(self.master)
+        p.pack(side=TOP)
+        names = ("%","//","**","C","1", "2", "3","+", "4", "5", "6", "-",  "7", "8"
+            , "9", "/", ".", "0", "*",  "=",'(',')','二进制','八进制')
+        for i in range(len(names)):
+            b = Button(p, text=names[i], font=('Inconsolata',16), width=8,height=2)
+            b.grid(row=i // 4, column=i % 4)
+            b.bind('<Button-1>', self.click)
+
+    def click(self, event):
+        if (event.widget['text'] in ('0', '1', '2', '3',
+                                     '4', '5', '6', '7', '8', '9', '.','(',')')):
+            self.show['text'] = self.show['text'] + event.widget['text']
+        elif (event.widget['text'] in ('+', '-', '*',
+                                       '/', '%', '**', '//')):
+            self.show['text'] = self.show['text'] + event.widget['text']
+        elif event.widget['text']=='C':
+            self.show['text'] = ''
+        elif event.widget['text']=='二进制':
+            self.show['text'] =bin(int(self.show['text']))
+        elif event.widget['text']=='八进制':
+            self.show['text'] =oct(int(self.show['text']))
+
+        elif (event.widget['text'] == '=' and self.show['text'] is not None):
+            self.hi = self.show['text']
+            print(self.hi)
+            self.show['text'] = str(eval(self.hi))
+
+    def clean(self, event):
+        self.hi = None
+        self.show['text'] = ''
+
+
+root = Tk()
+root.title("Counter")
+Count(root)
+root.mainloop()
